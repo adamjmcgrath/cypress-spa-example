@@ -1,0 +1,47 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SPA/Cypress example</title>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.12.1/auth0-spa-js.production.js"></script>
+</head>
+<body>
+<button id="btn" style="display: none;">login</button>
+<p id="hello" style="display: none;"></p>
+<script>
+  var auth0 = new Auth0Client({
+    client_id: 'wLSIP47wM39wKdDmOj6Zb5eSEw3JVhVp',
+    domain: 'brucke.auth0.com',
+    audience: 'https://brucke.auth0.com/api/v2/',
+    redirect_uri: 'http://localhost:3000',
+    cacheLocation: window.Cypress ? 'localstorage' : 'memory'
+  });
+  var hello = document.getElementById('hello');
+  var btn = document.getElementById('btn');
+
+  function loggedIn() {
+    auth0.getUser().then(function(user) {
+      if (!user) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+        hello.style.display = 'block';
+        hello.innerHTML = 'Hello ' + user.name;
+      }
+    });
+  }
+
+  if (location.search.includes('code=')) {
+    auth0.handleRedirectCallback().then(function() {
+      history.replaceState({}, document.title, '/');
+      loggedIn();
+    });
+  } else {
+    auth0.checkSession().then(loggedIn);
+  }
+
+  btn.onclick = function() {
+    auth0.loginWithRedirect();
+  };
+</script>
+</body>
+</html>
