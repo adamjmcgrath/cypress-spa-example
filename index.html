@@ -2,9 +2,11 @@
 <head>
   <meta charset="utf-8">
   <title>SPA/Cypress example</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=MY_API_KEY"></script>
   <script src="https://cdn.auth0.com/js/auth0-spa-js/1.12.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
+<div id="map" style="width: 200px; height: 200px"></div>
 <button id="btn" style="display: none;">login</button>
 <p id="hello" style="display: none;"></p>
 <script>
@@ -17,6 +19,11 @@
   });
   var hello = document.getElementById('hello');
   var btn = document.getElementById('btn');
+
+  new google.maps.Map(document.getElementById("map"), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 8,
+  });
 
   function loggedIn() {
     auth0.getUser().then(function(user) {
