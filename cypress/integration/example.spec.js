@@ -30,7 +30,7 @@ context('Example', () => {
 
       cy.window().then((win) => {
         win.localStorage.setItem(
-            `@@auth0spajs@@::${client_id}::${audience}::${scope}`,
+            `@@auth0spajs@@::${client_id}::${audience}::${scope}`, // Could also be ::default:: instead of ::${audience}::
             JSON.stringify({
               body: {
                 client_id,
